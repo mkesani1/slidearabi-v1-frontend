@@ -2885,79 +2885,23 @@ body {
   var fileDetails = document.getElementById("file-details");
   var fileUploaded = false;
 
-  uploadZone.addEventListener("click", function() {
-    if (fileUploaded) return;
-    uploadZone.innerHTML = '<div class="upload-zone-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg></div><h3>Analyzing file...</h3><p style="color:var(--text-40)">Please wait</p>';
+  // Mockup upload handler disabled — real UploadManager in api-integration.js handles this
+  // uploadZone.addEventListener("click", function() { ... });
 
-    setTimeout(function() {
-      uploadZone.style.borderColor = "rgba(34,197,94,0.3)";
-      uploadZone.style.background = "rgba(34,197,94,0.04)";
-      uploadZone.innerHTML = '<div class="upload-zone-icon" style="color:#4ade80"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><h3 style="color:#4ade80">File uploaded successfully</h3><p style="color:var(--text-40)">Q4_Strategy_Deck.pptx</p>';
-      uploadZone.style.cursor = "default";
-      fileDetails.classList.add("show");
-      fileUploaded = true;
-    }, 1200);
-  });
+  // Mockup convert handler disabled — real ConversionTracker in api-integration.js handles this
+  // document.getElementById("btn-convert").addEventListener("click", function() { goToScreen(3); });
 
-  document.getElementById("btn-convert").addEventListener("click", function() {
-    goToScreen(3);
-  });
-
-  // --- Screen 3: Processing ---
+  // Mockup startProcessing disabled — real ConversionTracker handles processing UI
   function startProcessing() {
-    processingStep = 0;
-    var steps = document.querySelectorAll("#process-steps .process-step");
-    var timeEl = document.getElementById("time-remaining");
-    var times = ["~2 minutes", "~1 minute 30s", "~1 minute", "~30 seconds"];
-
-    steps.forEach(function(s) {
-      s.classList.remove("active", "done");
-    });
-
-    function advanceStep() {
-      if (processingStep < 4) {
-        if (processingStep > 0) {
-          steps[processingStep - 1].classList.remove("active");
-          steps[processingStep - 1].classList.add("done");
-        }
-        if (processingStep < 4) {
-          steps[processingStep].classList.add("active");
-        }
-        timeEl.innerHTML = 'Estimated time remaining: <span>' + times[Math.min(processingStep, 3)] + '</span>';
-        processingStep++;
-      } else {
-        steps[3].classList.remove("active");
-        steps[3].classList.add("done");
-        timeEl.innerHTML = '<span style="color:#4ade80">Complete!</span>';
-        clearInterval(processingTimer);
-        processingTimer = null;
-        setTimeout(function() {
-          goToScreen(4);
-        }, 800);
-      }
-    }
-
-    advanceStep();
-    processingTimer = setInterval(advanceStep, 1500);
+    // No-op: replaced by api-integration.js ConversionTracker
   }
 
   // --- Screen 4: Preview & Pay ---
-  document.getElementById("btn-pay").addEventListener("click", function() {
-    var overlay = document.getElementById("stripe-overlay");
-    overlay.classList.add("show");
-    setTimeout(function() {
-      overlay.classList.remove("show");
-      goToScreen(5);
-    }, 2000);
-  });
+  // Mockup pay handler disabled — real PaymentManager in api-integration.js handles Stripe
+  // document.getElementById("btn-pay").addEventListener("click", function() { ... });
 
-  document.getElementById("btn-download-preview").addEventListener("click", function() {
-    var btn = this;
-    btn.textContent = "Downloading...";
-    setTimeout(function() {
-      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px;margin-top:-1px"><polyline points="20 6 9 17 4 12"/></svg> Downloaded!';
-    }, 1000);
-  });
+  // Mockup preview download disabled — real handler in api-integration.js
+  // document.getElementById("btn-download-preview").addEventListener("click", function() { ... });
 
   var slidePage = 1;
   var totalSlidePages = 8;
@@ -2974,11 +2918,7 @@ body {
   });
 
   // --- Screen 5: Download ---
-  document.getElementById("btn-download-full").addEventListener("click", function() {
-    var btn = this;
-    btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Downloaded!';
-    btn.style.background = "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)";
-  });
+  // Mockup download handler disabled — real handler in api-integration.js
 
   document.getElementById("btn-convert-another").addEventListener("click", function() {
     fileUploaded = false;
@@ -3045,7 +2985,7 @@ body {
   'use strict';
 
   // ── Initialize API + Geo-Pricing ──────────────────────────────────
-  var api = new SlideArabiAPI('https://slideshift-agents.up.railway.app');
+  var api = new SlideArabiAPI('https://slidearabi-production.up.railway.app');
   var pricing = GeoPricing.detect();
   var currentJobId = null;
   var currentSlideCount = 0;
